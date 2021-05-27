@@ -16,7 +16,7 @@ app.use(cors());
 app.use("/words", wordRoutes);
 
 const CONNECTION_URL = process.env.MONGODB_URI;
-// "mongodb+srv://dtuiyot:dtuiyot1234@cluster0.6zkxx.mongodb.net/ReverseIPA?retryWrites=true&w=majority";
+
 const PORT = process.env.PORT || 5000;
 
 mongoose
