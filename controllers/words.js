@@ -3,12 +3,12 @@ import WordToIpa from "../models/wordToIpa.js";
 import { fr_QC_WordToIpa } from "../models/french.js";
 
 export const fetchResults = async (req, res) => {
-  const { term, type, position } = req.params;
-  const limit = parseInt(req.params.limit);
-  const skip = parseInt(req.params.skip);
+  const { query, type, position } = req.query;
+  const limit = parseInt(req.query.limit);
+  const skip = parseInt(req.query.skip);
   try {
     let results;
-    const regexTerm = generateRegex(position, term);
+    const regexTerm = generateRegex(position, query);
     if (type === "toWord") {
       results = await IpaToWord.find({
         ipaTranscriptionStripped: { $regex: regexTerm },
@@ -33,14 +33,14 @@ export const fetchResults = async (req, res) => {
 
 const getSkipAndLimit = () => {};
 
-const generateRegex = (position, term) => {
+const generateRegex = (position, query) => {
   if (position === "anywhere") {
-    return term;
+    return query;
   } else if (position === "start") {
-    return `^${term}`;
+    return `^${query}`;
   } else if (position === "middle") {
-    return `^(?!^${term})(?!.*${term}$)(?=.*${term}.*).*$`;
+    return `^(?!^${query})(?!.*${query}$)(?=.*${query}.*).*$`;
   } else if (position === "end") {
-    return `${term}$`;
+    return `${query}$`;
   }
 };
